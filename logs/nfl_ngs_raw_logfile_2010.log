@@ -1,2 +1,16 @@
-=== season 2010  2026-09-10 01:42:05Z ===
-scripts/daily_ngs_scraper.sh: line 104: PY: unbound variable
+=== season 2010  2026-09-10 01:50:47Z ===
+ngs_01_schedules_scrape {"season": 2010, "status": "wrote", "games": 333, "elapsed": 0.5178340240381658}
+stage ngs_01_schedules_scrape elapsed=3s
+ngs_02_teams_scrape {"season": 2010, "status": "empty", "elapsed": 0.3624088179785758}
+stage ngs_02_teams_scrape elapsed=3s
+ngs_03_statboard_scrape {"season": 2010, "status": "ok", "wrote": 0, "skipped": 0, "empty": 90, "absent": 0, "failed": 0, "elapsed": 30.904139949940145}
+stage ngs_03_statboard_scrape elapsed=34s
+ngs_04_leaders_scrape {"season": 2010, "status": "ok", "wrote": 0, "skipped": 0, "empty": 191, "absent": 0, "failed": 0, "elapsed": 65.2067694440484}
+stage ngs_04_leaders_scrape elapsed=67s
+  gamecenter 2010: 100/314 {'wrote': 100, 'skipped': 0, 'empty': 0, 'absent': 0, 'failed': 0}
+  gamecenter 2010: 200/314 {'wrote': 200, 'skipped': 0, 'empty': 0, 'absent': 0, 'failed': 0}
+  gamecenter 2010: 300/314 {'wrote': 300, 'skipped': 0, 'empty': 0, 'absent': 0, 'failed': 0}
+ngs_05_gamecenter_scrape {"season": 2010, "status": "ok", "games": 314, "wrote": 314, "skipped": 0, "empty": 0, "absent": 0, "failed": 0, "elapsed": 141.18993916921318}
+stage ngs_05_gamecenter_scrape elapsed=145s
+season 2010 EXIT=0
+pushed: NGS Raw Update (Start: 2010 End: 2010) (attempt 1)

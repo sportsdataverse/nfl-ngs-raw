@@ -1,2 +1,16 @@
-=== season 2015  2026-09-10 01:42:10Z ===
-scripts/daily_ngs_scraper.sh: line 104: PY: unbound variable
+=== season 2015  2026-09-10 02:09:51Z ===
+ngs_01_schedules_scrape {"season": 2015, "status": "wrote", "games": 333, "elapsed": 0.5058775399811566}
+stage ngs_01_schedules_scrape elapsed=3s
+ngs_02_teams_scrape {"season": 2015, "status": "wrote", "elapsed": 0.38099996699020267}
+stage ngs_02_teams_scrape elapsed=4s
+ngs_03_statboard_scrape {"season": 2015, "status": "ok", "wrote": 0, "skipped": 0, "empty": 90, "absent": 0, "failed": 0, "elapsed": 30.70763701898977}
+stage ngs_03_statboard_scrape elapsed=33s
+ngs_04_leaders_scrape {"season": 2015, "status": "ok", "wrote": 0, "skipped": 0, "empty": 191, "absent": 0, "failed": 0, "elapsed": 64.55608006613329}
+stage ngs_04_leaders_scrape elapsed=67s
+  gamecenter 2015: 100/309 {'wrote': 100, 'skipped': 0, 'empty': 0, 'absent': 0, 'failed': 0}
+  gamecenter 2015: 200/309 {'wrote': 200, 'skipped': 0, 'empty': 0, 'absent': 0, 'failed': 0}
+  gamecenter 2015: 300/309 {'wrote': 300, 'skipped': 0, 'empty': 0, 'absent': 0, 'failed': 0}
+ngs_05_gamecenter_scrape {"season": 2015, "status": "ok", "games": 309, "wrote": 309, "skipped": 0, "empty": 0, "absent": 0, "failed": 0, "elapsed": 124.84786946303211}
+stage ngs_05_gamecenter_scrape elapsed=127s
+season 2015 EXIT=0
+pushed: NGS Raw Update (Start: 2015 End: 2015) (attempt 1)

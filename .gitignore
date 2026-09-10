@@ -21,3 +21,6 @@ dev/
 **/.omc/
 .understand-anything/
 **/.understand-anything/
+
+# Aggregate driver run log (per-season logs under logs/ ARE committed)
+logs/daily_ngs_*.log

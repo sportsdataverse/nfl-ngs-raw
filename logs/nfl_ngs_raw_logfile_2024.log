@@ -1,16 +1,16 @@
-=== season 2024  2026-09-10 01:43:48Z ===
-ngs_01_schedules_scrape {"season": 2024, "status": "skipped", "games": 334, "elapsed": 0.011556723155081272}
+=== season 2024  2026-09-10 03:04:02Z ===
+ngs_01_schedules_scrape {"season": 2024, "status": "skipped", "games": 334, "elapsed": 0.011818792903795838}
 stage ngs_01_schedules_scrape elapsed=3s
-ngs_02_teams_scrape {"season": 2024, "status": "skipped", "elapsed": 0.00035085598938167095}
-stage ngs_02_teams_scrape elapsed=2s
-ngs_03_statboard_scrape {"season": 2024, "status": "ok", "wrote": 0, "skipped": 86, "empty": 4, "absent": 0, "failed": 0, "elapsed": 1.546055105049163}
+ngs_02_teams_scrape {"season": 2024, "status": "skipped", "elapsed": 0.0003588218241930008}
+stage ngs_02_teams_scrape elapsed=3s
+ngs_03_statboard_scrape {"season": 2024, "status": "ok", "wrote": 0, "skipped": 86, "empty": 4, "absent": 0, "failed": 0, "elapsed": 1.4970928460825235}
 stage ngs_03_statboard_scrape elapsed=4s
-ngs_04_leaders_scrape {"season": 2024, "status": "ok", "wrote": 0, "skipped": 191, "empty": 0, "absent": 0, "failed": 0, "elapsed": 0.21545075299218297}
+ngs_04_leaders_scrape {"season": 2024, "status": "ok", "wrote": 0, "skipped": 191, "empty": 0, "absent": 0, "failed": 0, "elapsed": 0.11840537493117154}
 stage ngs_04_leaders_scrape elapsed=3s
-  gamecenter 2024: 100/334 {'wrote': 95, 'skipped': 5, 'empty': 0, 'absent': 0, 'failed': 0}
-  gamecenter 2024: 200/334 {'wrote': 195, 'skipped': 5, 'empty': 0, 'absent': 0, 'failed': 0}
-  gamecenter 2024: 300/334 {'wrote': 295, 'skipped': 5, 'empty': 0, 'absent': 0, 'failed': 0}
-ngs_05_gamecenter_scrape {"season": 2024, "status": "ok", "games": 334, "wrote": 329, "skipped": 5, "empty": 0, "absent": 0, "failed": 0, "elapsed": 168.86845835880376}
-stage ngs_05_gamecenter_scrape elapsed=173s
+  gamecenter 2024: 100/334 {'wrote': 0, 'skipped': 100, 'empty': 0, 'absent': 0, 'failed': 0}
+  gamecenter 2024: 200/334 {'wrote': 0, 'skipped': 200, 'empty': 0, 'absent': 0, 'failed': 0}
+  gamecenter 2024: 300/334 {'wrote': 0, 'skipped': 300, 'empty': 0, 'absent': 0, 'failed': 0}
+ngs_05_gamecenter_scrape {"season": 2024, "status": "ok", "games": 334, "wrote": 0, "skipped": 334, "empty": 0, "absent": 0, "failed": 0, "elapsed": 0.1171089659910649}
+stage ngs_05_gamecenter_scrape elapsed=2s
 season 2024 EXIT=0
-pushed: NGS Raw Update (Start: 2024 End: 2024) (attempt 1)
+nothing to commit for: NGS Raw Update (Start: 2024 End: 2024)

@@ -1,2 +1,16 @@
-=== season 2022  2026-09-10 01:42:17Z ===
-scripts/daily_ngs_scraper.sh: line 104: PY: unbound variable
+=== season 2022  2026-09-10 02:51:12Z ===
+ngs_01_schedules_scrape {"season": 2022, "status": "wrote", "games": 335, "elapsed": 0.34910750784911215}
+stage ngs_01_schedules_scrape elapsed=3s
+ngs_02_teams_scrape {"season": 2022, "status": "wrote", "elapsed": 0.36856037797406316}
+stage ngs_02_teams_scrape elapsed=3s
+ngs_03_statboard_scrape {"season": 2022, "status": "ok", "wrote": 84, "skipped": 0, "empty": 6, "absent": 0, "failed": 0, "elapsed": 39.96759055601433}
+stage ngs_03_statboard_scrape elapsed=42s
+ngs_04_leaders_scrape {"season": 2022, "status": "ok", "wrote": 184, "skipped": 0, "empty": 7, "absent": 0, "failed": 0, "elapsed": 145.53410055395216}
+stage ngs_04_leaders_scrape elapsed=148s
+  gamecenter 2022: 100/334 {'wrote': 100, 'skipped': 0, 'empty': 0, 'absent': 0, 'failed': 0}
+  gamecenter 2022: 200/334 {'wrote': 200, 'skipped': 0, 'empty': 0, 'absent': 0, 'failed': 0}
+  gamecenter 2022: 300/334 {'wrote': 300, 'skipped': 0, 'empty': 0, 'absent': 0, 'failed': 0}
+ngs_05_gamecenter_scrape {"season": 2022, "status": "ok", "games": 334, "wrote": 334, "skipped": 0, "empty": 0, "absent": 0, "failed": 0, "elapsed": 182.84447290701792}
+stage ngs_05_gamecenter_scrape elapsed=185s
+season 2022 EXIT=0
+pushed: NGS Raw Update (Start: 2022 End: 2022) (attempt 1)

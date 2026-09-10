@@ -1,0 +1,65 @@
+name: Scrape NGS Raw Data
+
+# MANUAL DISPATCH ONLY -- the scheduled producer is the droplet cron (see
+# README "Automation"). Access to nextgenstats.nfl.com/api is EGRESS-dependent:
+# 19 of 36 routes answer from the project droplet, and a GitHub-hosted macOS
+# runner was denied outright on 2026-09-03 (AWS API Gateway identity-based
+# deny). An Ubuntu runner is nflverse's demonstrated-working egress for the
+# statboard/ family, so this workflow is kept as a tested fallback and a way
+# to re-probe that -- but two schedulers producing the same tree is how
+# nfl-raw and odds-data diverged, so it is NOT on a cron here.
+#
+# Serialize every workflow in this repo that commits to it (queue, never
+# cancel: a cancelled run mid-push leaves origin ahead of the next run).
+concurrency:
+  group: ${{ github.repository }}-commit
+  cancel-in-progress: false
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_year:
+        description: 'Start season, STARTING year (default: current)'
+        required: false
+        type: string
+      end_year:
+        description: 'End season (default: same as start)'
+        required: false
+        type: string
+      rescrape:
+        description: 'Refetch payloads already valid on disk'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  scrape_ngs_raw:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.12'
+          cache-dependency-glob: uv.lock
+
+      - name: Install
+        run: uv sync --frozen
+
+      - name: Scrape
+        env:
+          IN_START: ${{ inputs.start_year }}
+          IN_END: ${{ inputs.end_year }}
+          IN_RESCRAPE: ${{ inputs.rescrape }}
+        run: |
+          ARGS=()
+          [ -n "$IN_START" ] && ARGS+=(-s "$IN_START")
+          [ -n "$IN_END" ] && ARGS+=(-e "$IN_END")
+          ARGS+=(-r "${IN_RESCRAPE:-true}")
+          bash scripts/daily_ngs_scraper.sh "${ARGS[@]}"

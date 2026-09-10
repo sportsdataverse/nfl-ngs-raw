@@ -1,0 +1,35 @@
+name: nfl-ngs-data trigger
+
+# Every push to main wakes the sibling nfl-ngs-data compile via
+# repository_dispatch, forwarding the head commit message. nfl-ngs-data parses
+# the season range out of it with `Start:\s*\K[0-9]{4}` / `End:\s*\K[0-9]{4}`,
+# anchored to the canonical "NGS Raw Update (Start: YYYY End: YYYY)" subject
+# scripts/daily_ngs_scraper.sh writes -- so embedded numbers elsewhere in a
+# message (PR ids, counts) cannot shadow the years. A push whose message has no
+# such tokens (a code change) makes the data side fall back to the current
+# season, which is the right default.
+#
+# Needs SDV_GH_TOKEN (a PAT with repo scope on nfl-ngs-data); the default
+# GITHUB_TOKEN cannot dispatch to another repo.
+
+on: [push, workflow_dispatch]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger nfl-ngs-data
+        uses: peter-evans/repository-dispatch@v4
+        with:
+          token: ${{ secrets.SDV_GH_TOKEN }}
+          repository: sportsdataverse/nfl-ngs-data
+          event-type: daily_nfl_ngs_data
+          client-payload: |-
+            {
+              "ref": "refs/heads/main",
+              "event_name": "daily_nfl_ngs_data",
+              "commit_message": ${{ toJSON(github.event.head_commit.message) }}
+            }

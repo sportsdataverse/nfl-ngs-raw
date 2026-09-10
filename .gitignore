@@ -1,0 +1,23 @@
+# The committed product IS the raw json tree under ngs/ (SDV -raw pattern) --
+# nothing below ngs/ is ignored on purpose. Do not "fix" this.
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+dist/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Scratch / experiments (a script is born here; it earns scripts/ only when wired in)
+dev/
+
+# Claude Code personal wiring (machine-specific paths)
+.claude/settings.local.json
+
+# Agent / tooling state
+.omc/
+**/.omc/
+.understand-anything/
+**/.understand-anything/

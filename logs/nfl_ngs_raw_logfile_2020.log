@@ -1,2 +1,15 @@
-=== season 2020  2026-09-10 01:42:15Z ===
-scripts/daily_ngs_scraper.sh: line 104: PY: unbound variable
+=== season 2020  2026-09-10 02:40:16Z ===
+ngs_01_schedules_scrape {"season": 2020, "status": "wrote", "games": 270, "elapsed": 0.40538746817037463}
+stage ngs_01_schedules_scrape elapsed=2s
+ngs_02_teams_scrape {"season": 2020, "status": "wrote", "elapsed": 0.35352432099170983}
+stage ngs_02_teams_scrape elapsed=3s
+ngs_03_statboard_scrape {"season": 2020, "status": "ok", "wrote": 68, "skipped": 0, "empty": 3, "absent": 0, "failed": 0, "elapsed": 31.410027901874855}
+stage ngs_03_statboard_scrape elapsed=34s
+ngs_04_leaders_scrape {"season": 2020, "status": "ok", "wrote": 153, "skipped": 0, "empty": 0, "absent": 0, "failed": 0, "elapsed": 99.03232171502896}
+stage ngs_04_leaders_scrape elapsed=101s
+  gamecenter 2020: 100/269 {'wrote': 100, 'skipped': 0, 'empty': 0, 'absent': 0, 'failed': 0}
+  gamecenter 2020: 200/269 {'wrote': 200, 'skipped': 0, 'empty': 0, 'absent': 0, 'failed': 0}
+ngs_05_gamecenter_scrape {"season": 2020, "status": "ok", "games": 269, "wrote": 269, "skipped": 0, "empty": 0, "absent": 0, "failed": 0, "elapsed": 136.09570658113807}
+stage ngs_05_gamecenter_scrape elapsed=138s
+season 2020 EXIT=0
+pushed: NGS Raw Update (Start: 2020 End: 2020) (attempt 1)

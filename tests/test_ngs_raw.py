@@ -63,6 +63,9 @@ def test_has_rows_semantics():
     assert not store.has_rows({}, "stats")
     assert store.has_rows([1], None) and not store.has_rows([], None)
     assert store.has_rows({"schedule": {}}, None) and not store.has_rows({}, None)
+    # ANY_LIST: a full envelope of empty category lists is NOT data (pre-floor statboard/leaders)
+    assert not store.has_rows({"season": 2009, "seasonType": "REG", "fastestSacks": [], "x": []}, store.ANY_LIST)
+    assert store.has_rows({"season": 2024, "fastestSacks": [{"play": 1}], "x": []}, store.ANY_LIST)
 
 
 def test_capture_never_persists_empty_and_respects_resume(tmp_path: Path):
@@ -139,7 +142,10 @@ def _plan(df):
 @pytest.mark.parametrize("stat", ["passing", "leaders"])
 def test_statboard_empty_payload_not_persisted(tmp_path: Path, monkeypatch, stat):
     schedule.write_schedule_json(2025, SCHED, root=tmp_path)
-    monkeypatch.setattr(statboard, "get_json", lambda path, params=None: {"stats": []} if stat != "leaders" else {})
+    empty_leaders = {"season": 2025, "seasonType": "REG", "fastestSacks": [], "longestCompletions": []}
+    monkeypatch.setattr(
+        statboard, "get_json", lambda path, params=None: {"stats": []} if stat != "leaders" else empty_leaders
+    )
     monkeypatch.setattr(statboard, "week_plan", lambda df: _plan(df))
     monkeypatch.setattr(
         statboard, "season_type_started", lambda df, st: schedule.season_type_started(df, st, now_ms=NOW)

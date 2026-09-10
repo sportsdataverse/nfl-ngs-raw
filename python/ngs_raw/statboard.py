@@ -26,7 +26,7 @@ from ngs_raw.schedule import (
     season_type_started,
     week_plan,
 )
-from ngs_raw.store import capture, tree_root
+from ngs_raw.store import ANY_LIST, capture, tree_root
 
 
 def out_path(stat: str, season: int, season_type: str, week: int | str, root=None) -> Path:
@@ -41,8 +41,8 @@ def _fetch(stat: str, season: int, season_type: str, week: int | None):
 
 
 def _list_key(stat: str) -> str | None:
-    # `leaders` is an object of category lists, validated as non-empty dict.
-    return None if stat == "leaders" else "stats"
+    # `leaders` is an object of category lists: valid only if SOME list has rows.
+    return ANY_LIST if stat == "leaders" else "stats"
 
 
 def scrape_season(

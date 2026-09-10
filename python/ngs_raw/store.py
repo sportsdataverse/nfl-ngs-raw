@@ -64,15 +64,25 @@ def read_json(path: Path) -> Any | None:
         return None
 
 
+#: list_key sentinel: "any list-valued field in the envelope is non-empty".
+#: statboard/leaders answers a full envelope of EMPTY category lists for a
+#: pre-floor season -- a non-empty dict with no rows in it, which a plain
+#: dict-is-truthy check banked (2026-09-09, seasons 2009-2015).
+ANY_LIST = "__any_list__"
+
+
 def has_rows(payload: Any, list_key: str | None) -> bool:
     """The finality/validity test derived from the DATA, not from a marker.
 
     ``list_key`` names the envelope's record list (``stats``, ``leaders``,
-    ...); ``None`` means the payload itself is the list (schedule, teams) or a
+    ...); :data:`ANY_LIST` means any list-valued field must be non-empty;
+    ``None`` means the payload itself is the list (schedule, teams) or a
     keyed object that only needs to be non-empty (gamecenter).
     """
     if payload is None:
         return False
+    if list_key == ANY_LIST:
+        return isinstance(payload, dict) and any(isinstance(v, list) and len(v) > 0 for v in payload.values())
     if list_key is None:
         if isinstance(payload, list):
             return len(payload) > 0

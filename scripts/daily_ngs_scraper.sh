@@ -17,6 +17,12 @@
 #
 # Commit subject is LOAD-BEARING: nfl_ngs_data_trigger.yml forwards it to
 # nfl-ngs-data, whose workflow parses the years with `Start:\s*\K[0-9]{4}`.
+#
+# Everything a later step depends on (interpreter, season range) is resolved at
+# TOP LEVEL, never inside a `{ ... } | tee` block: a pipe runs its block in a
+# subshell, and a variable set there does not exist afterwards. The first run
+# of this driver did exactly that and skipped every stage with
+# "PY: unbound variable" -- loudly, because of set -u, which is why set -u stays.
 set -uo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -34,7 +40,23 @@ done
 
 export PYTHONUNBUFFERED=1
 export PYTHONIOENCODING=utf-8
+export PYTHONPATH=python
 mkdir -p logs
+RUNLOG="logs/daily_ngs_$(date -u +%Y%m%d).log"
+
+# shellcheck source=scripts/_venv.sh
+. "$REPO/scripts/_venv.sh"
+PY="$SDV_PY"
+sdv_preflight sportsdataverse.dl_utils polars ngs_raw
+
+if [ -z "$START_YEAR" ]; then
+  START_YEAR=$("$PY" -c 'from ngs_raw.cli import current_season; print(current_season())')
+fi
+END_YEAR=${END_YEAR:-$START_YEAR}
+{
+  echo "[$(date -u '+%F %T')Z] interpreter: $PY"
+  echo "[$(date -u '+%F %T')Z] ngs raw scrape start: seasons ${START_YEAR}-${END_YEAR} rescrape=${RESCRAPE}"
+} | tee -a "$RUNLOG"
 
 # Commit + push, surviving a remote that moved while the scrape was running.
 # Stage and commit FIRST so the tree is clean, then reconcile. `rebase --merge`,
@@ -65,54 +87,42 @@ sdv_commit_push() {
   return 1
 }
 
-# Resolve the interpreter INSIDE the logging block so a resolver FATAL lands
-# in the log rather than leaving an empty logs/ that reads as "never ran".
+git config --local user.email "action@github.com"
+git config --local user.name "Github Action"
+git fetch --quiet origin main || echo "WARN: fetch failed; push may be rejected" | tee -a "$RUNLOG"
+if [ -z "$(git status --porcelain)" ] && ! git rebase --merge origin/main >/dev/null 2>&1; then
+  git rebase --abort >/dev/null 2>&1 || true
+  echo "[$(date -u '+%F %T')Z] WARN: rebase onto origin/main failed; continuing on local HEAD" | tee -a "$RUNLOG"
+fi
+
 RC=0
-{
-  # shellcheck source=scripts/_venv.sh
-  . "$REPO/scripts/_venv.sh"
-  PY="$SDV_PY"
-  echo "[$(date -u '+%F %T')Z] interpreter: $PY"
-  sdv_preflight sportsdataverse.dl_utils polars ngs_raw
-
-  if [ -z "$START_YEAR" ]; then
-    START_YEAR=$(PYTHONPATH=python "$PY" -c 'from ngs_raw.cli import current_season; print(current_season())')
-  fi
-  END_YEAR=${END_YEAR:-$START_YEAR}
-  echo "[$(date -u '+%F %T')Z] ngs raw scrape start: seasons ${START_YEAR}-${END_YEAR} rescrape=${RESCRAPE}"
-
-  git config --local user.email "action@github.com"
-  git config --local user.name "Github Action"
-  git fetch --quiet origin main || echo "WARN: fetch failed; push may be rejected"
-  if [ -z "$(git status --porcelain)" ] && ! git rebase --merge origin/main >/dev/null 2>&1; then
-    git rebase --abort >/dev/null 2>&1 || true
-    echo "[$(date -u '+%F %T')Z] WARN: rebase onto origin/main failed; continuing on local HEAD"
-  fi
-} 2>&1 | tee -a "logs/daily_ngs_$(date -u +%Y%m%d).log"
-
 for i in $(seq "${START_YEAR}" "${END_YEAR}"); do
   LOGFILE="logs/nfl_ngs_raw_logfile_${i}.log"
   TMPLOG=$(mktemp "/tmp/nfl_ngs_raw_${i}.XXXXXX.log")
-  SEASON_RC=0
+  RCFILE=$(mktemp "/tmp/nfl_ngs_raw_rc_${i}.XXXXXX")
   {
+    SEASON_RC=0
     echo "=== season $i  $(date -u '+%F %T')Z ==="
     for stage in ngs_01_schedules_scrape ngs_02_teams_scrape ngs_03_statboard_scrape ngs_04_leaders_scrape ngs_05_gamecenter_scrape; do
       t0=$(date +%s)
       # Gamecenter is per FINAL game and never changes once banked: a daily
       # refresh must not re-download every game of the season.
       r="$RESCRAPE"; [ "$stage" = "ngs_05_gamecenter_scrape" ] && r="false"
-      PYTHONPATH=python "$PY" "python/${stage}.py" -s "$i" -e "$i" -r "$r" || { rc=$?; echo "::warning ::$stage $i rc=$rc"; SEASON_RC=$rc; }
+      "$PY" "python/${stage}.py" -s "$i" -e "$i" -r "$r" || { rc=$?; echo "::warning ::$stage $i rc=$rc"; SEASON_RC=$rc; }
       echo "stage $stage elapsed=$(( $(date +%s) - t0 ))s"
     done
     echo "season $i EXIT=$SEASON_RC"
     # Commit whatever landed even if a stage failed -- partial output is usable
     # and the failure is carried in the exit code, never hidden.
     sdv_commit_push "NGS Raw Update (Start: $i End: $i)" ngs || SEASON_RC=1
+    # The block is a subshell (pipe): hand the rc to the parent through a file.
+    echo "$SEASON_RC" > "$RCFILE"
   } 2>&1 | tee "$TMPLOG"
+  SEASON_RC=$(cat "$RCFILE" 2>/dev/null || echo 1); rm -f "$RCFILE"
   cp "$TMPLOG" "$LOGFILE"; rm -f "$TMPLOG"
   sdv_commit_push "NGS Raw log update (Start: $i End: $i)" "$LOGFILE" || SEASON_RC=1
   [ "$SEASON_RC" -eq 0 ] || RC=1
 done
 
-echo "[$(date -u '+%F %T')Z] ngs raw scrape done EXIT=$RC" | tee -a "logs/daily_ngs_$(date -u +%Y%m%d).log"
+echo "[$(date -u '+%F %T')Z] ngs raw scrape done EXIT=$RC" | tee -a "$RUNLOG"
 exit "$RC"

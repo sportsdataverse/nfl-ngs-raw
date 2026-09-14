@@ -6,7 +6,7 @@ consumer's too: ``nfl-ngs-data`` reads ``ngs/schedules/parquet/
 ngs_schedule_{season}.parquet`` over HTTPS to build game-id lists without
 listing a directory it cannot clone (data-pipeline skill, step 9a).
 
-Finality is derived from the DATA: ``score.phase`` in {FINAL, FINAL OVERTIME}.
+Finality is derived from the DATA: ``score.phase`` in :data:`FINAL_PHASES`.
 A week whose games have not all reached that phase is re-fetched on every run
 regardless of what is on disk -- a scraper-written marker only records that a
 fetch happened, not that the thing it fetched was finished.
@@ -24,7 +24,11 @@ from ngs_raw import SEASON_TYPES
 from ngs_raw.fetch import get_json
 from ngs_raw.store import capture, read_json, tree_root, write_json_atomic
 
-FINAL_PHASES = {"FINAL", "FINAL OVERTIME"}
+# NGS spells overtime both ways: "FINAL_OVERTIME" in 2018-2019 schedules (17 and
+# 7 games), "FINAL OVERTIME" from 2019 on. Missing the underscore form silently
+# classed every 2018-2019 overtime game as unfinished, so gamecenter never
+# fetched them (found 2026-09-14).
+FINAL_PHASES = {"FINAL", "FINAL OVERTIME", "FINAL_OVERTIME"}
 
 _COLS = {
     "season": pl.Int64,

@@ -153,3 +153,14 @@ def test_statboard_empty_payload_not_persisted(tmp_path: Path, monkeypatch, stat
     out = statboard.scrape_season(2025, root=tmp_path, rescrape=True, stats=(stat,))
     assert out["wrote"] == 0 and out["empty"] >= 1
     assert not list((tmp_path / "statboard").rglob("*.json"))
+
+
+def test_both_overtime_spellings_are_final():
+    """2018-2019 schedules say FINAL_OVERTIME; later seasons FINAL OVERTIME."""
+    games = [
+        game(1, "REG", 1, NOW - 10, {**FINAL, "phase": "FINAL_OVERTIME"}),
+        game(2, "REG", 1, NOW - 9, {**FINAL, "phase": "FINAL OVERTIME"}),
+    ]
+    df = schedule.tidy(games)
+    assert schedule.final_game_ids(df) == [1, 2]
+    assert schedule.week_plan(df, now_ms=NOW) == [("REG", 1, True)]

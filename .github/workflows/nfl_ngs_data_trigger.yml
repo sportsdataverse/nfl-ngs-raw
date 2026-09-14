@@ -21,7 +21,26 @@ jobs:
   trigger:
     runs-on: ubuntu-latest
     steps:
+      # scripts/daily_ngs_scraper.sh pushes the data commit, then a separate
+      # "NGS Raw log update" commit seconds later. Both used to dispatch, so the
+      # data side ran twice every morning; the second run built on the SHA frozen
+      # at its event, lost the push, and went red daily (2026-09-10..14).
+      # Skip a push made ONLY of log-update commits. Every commit is checked, not
+      # just head_commit: if a rejected data push is retried and carried by the
+      # log push, head_commit is the log commit and the data must still dispatch.
+      - name: Skip log-only pushes
+        id: gate
+        env:
+          EVENT: ${{ github.event_name }}
+          COMMITS: ${{ toJSON(github.event.commits) }}
+        run: |
+          if [ "$EVENT" != "push" ]; then echo "dispatch=true" >> "$GITHUB_OUTPUT"; exit 0; fi
+          n=$(printf '%s' "$COMMITS" | jq '[.[] | select(.message | startswith("NGS Raw log update") | not)] | length')
+          echo "non-log commits in push: $n"
+          if [ "$n" -gt 0 ]; then echo "dispatch=true" >> "$GITHUB_OUTPUT"; else echo "dispatch=false" >> "$GITHUB_OUTPUT"; fi
+
       - name: Trigger nfl-ngs-data
+        if: steps.gate.outputs.dispatch == 'true'
         uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.SDV_GH_TOKEN }}

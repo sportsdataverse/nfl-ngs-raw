@@ -13,6 +13,9 @@ Committed tree (every path is a stable contract a consumer builds URLs from)::
     ngs/statboard/{stat}/{season}/{TYPE}_{week}.json   statboard/{stat}; week 'all' = season aggregate
     ngs/leaders/{family}/{season}/{TYPE}_{week}.json   leaders/* ; week 'all' = season scope
     ngs/gamecenter/{season}/{gameId}.json              gamecenter/overview?gameId=
+    ngs/highlights/list/{season}/{TYPE}_{week}.json    plays/highlights?season&seasonType&week (pages merged)
+    ngs/highlights/{tracking,participation}/{season}/{gameId}_{playId}.json.gz
+                                                       per highlight play (the only plays these routes serve)
 
 Season floors, measured live 2026-09-09 (see sdv-internal-refs/nfl/nextgenstats):
 ``statboard/`` and ``leaders/`` serve nothing before 2016 (the tracking era);
@@ -49,11 +52,13 @@ SEASON_TYPES = ("PRE", "REG", "POST")
 TRACKING_FLOOR = 2016  # statboard/ + leaders/
 SCHEDULE_FLOOR = 2009  # league/schedule
 GAMECENTER_FLOOR = 2012  # gamecenter/overview (2012 verified; earlier untested)
+HIGHLIGHT_FLOOR = 2018  # plays/highlights: total=0 for 2015-2017 (measured 2026-09-14)
 
 __all__ = [
     "API",
     "BASE",
     "GAMECENTER_FLOOR",
+    "HIGHLIGHT_FLOOR",
     "LEADER_FAMILIES",
     "SCHEDULE_FLOOR",
     "SEASON_TYPES",

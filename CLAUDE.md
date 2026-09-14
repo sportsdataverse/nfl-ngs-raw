@@ -44,11 +44,20 @@ source `scripts/_venv.sh` and call `$SDV_PY` by path.
 - Writes are atomic (tmp + rename); the master schedule is upserted by
   `game_id`, never clobbered.
 - `-r` goes through `store.str2bool` (unknown → False). Never `argparse type=bool`.
+- **Highlights (stage 06)** enumerate from the weekly `plays/highlights` list
+  (pages merged; a merge short of `total` is a failure). A week's list refetches
+  until every game is FINAL **and** `NGS_HIGHLIGHT_SETTLE_DAYS` (default 7) have
+  passed since its last kickoff — tagging lags the game. Per-play tracking and
+  participation are final once valid; a listed play that 403s or has no player
+  rows is `failed`, never absent.
 
 ## Gotchas
 
 - Access is **egress-dependent**: 19/36 routes answer from the project droplet;
-  a GitHub macOS runner was denied outright. The droplet cron is the scheduler;
+  a GitHub macOS runner was denied outright. Per-GAME lookups (`live/*`,
+  `participation/team/game`, `plays/highlights?gameId=`) are denied from every
+  egress, residential included; tracking is served for highlight plays only
+  (ClaudeCowork/notes/2026-09-14-ngs-highlight-tracking-and-denied-routes.md). The droplet cron is the scheduler;
   `scrape_ngs_raw.yml` is dispatch-only on purpose. Don't add a cron to it.
 - `leaders/{distance,speed,time}/*` silently answer **week 1** when `week` is
   omitted — always send it (the stage does).
@@ -63,10 +72,10 @@ source `scripts/_venv.sh` and call `$SDV_PY` by path.
 ## Structure
 
 ```
-python/ngs_raw/{__init__,fetch,store,schedule,statboard,leaders,gamecenter,teams,cli}.py
-python/ngs_0{1..5}_*_scrape.py     numbered shims, intended build order
+python/ngs_raw/{__init__,fetch,store,schedule,statboard,leaders,gamecenter,highlights,teams,cli}.py
+python/ngs_0{1..6}_*_scrape.py     numbered shims, intended build order
 scripts/daily_ngs_scraper.sh       driver (commit + push per season) ; scripts/_venv.sh
-ngs/{schedules,teams,statboard,leaders,gamecenter}/   committed raw tree
+ngs/{schedules,teams,statboard,leaders,gamecenter,highlights}/   committed raw tree
 .github/workflows/{tests,orphan_scripts,scrape_ngs_raw,nfl_ngs_data_trigger}.yml
 ```
 

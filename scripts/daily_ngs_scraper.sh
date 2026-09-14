@@ -103,11 +103,16 @@ for i in $(seq "${START_YEAR}" "${END_YEAR}"); do
   {
     SEASON_RC=0
     echo "=== season $i  $(date -u '+%F %T')Z ==="
-    for stage in ngs_01_schedules_scrape ngs_02_teams_scrape ngs_03_statboard_scrape ngs_04_leaders_scrape ngs_05_gamecenter_scrape; do
+    for stage in ngs_01_schedules_scrape ngs_02_teams_scrape ngs_03_statboard_scrape ngs_04_leaders_scrape ngs_05_gamecenter_scrape ngs_06_highlights_scrape; do
       t0=$(date +%s)
       # Gamecenter is per FINAL game and never changes once banked: a daily
-      # refresh must not re-download every game of the season.
-      r="$RESCRAPE"; [ "$stage" = "ngs_05_gamecenter_scrape" ] && r="false"
+      # refresh must not re-download every game of the season. Highlights
+      # manage their own freshness (lists refetch until settled; per-play
+      # payloads are final once valid), so -r true would only re-pull lists.
+      r="$RESCRAPE"
+      case "$stage" in ngs_05_gamecenter_scrape|ngs_06_highlights_scrape) r="false" ;; esac
+      # No highlight list exists before 2018: skip rather than walk empty weeks.
+      if [ "$stage" = "ngs_06_highlights_scrape" ] && [ "$i" -lt 2018 ]; then continue; fi
       "$PY" "python/${stage}.py" -s "$i" -e "$i" -r "$r" || { rc=$?; echo "::warning ::$stage $i rc=$rc"; SEASON_RC=$rc; }
       echo "stage $stage elapsed=$(( $(date +%s) - t0 ))s"
     done

@@ -46,7 +46,7 @@ import polars as pl
 
 from ngs_raw import HIGHLIGHT_FLOOR
 from ngs_raw.fetch import FetchError, get_json
-from ngs_raw.schedule import FINAL_PHASES, load_season
+from ngs_raw.schedule import FINAL_PHASES, final_game_ids, load_season
 from ngs_raw.store import has_rows, read_json, tree_root, write_json_atomic
 
 __all__ = ["HIGHLIGHT_FLOOR", "scrape_season"]
@@ -237,6 +237,14 @@ def scrape_season(
 
     plays = list(dict.fromkeys(plays))
     counts["highlights"] = len(plays)
+    # Per-play payloads only for FINAL games -- the same rule gamecenter follows.
+    # A listed highlight from a game that never finished has no tracking: game
+    # 2023010200 (BUF@CIN, suspended in the 1st quarter) lists one highlight and
+    # both routes answer 503 for it, forever. A game still in progress is
+    # skipped for tonight and picked up once the schedule says FINAL.
+    final = set(final_game_ids(df))
+    counts["not_final"] = sum(1 for gid, _ in plays if gid not in final)
+    plays = [(gid, pid) for gid, pid in plays if gid in final]
     if limit:
         plays = plays[:limit]
     for i, (gid, pid) in enumerate(plays, 1):

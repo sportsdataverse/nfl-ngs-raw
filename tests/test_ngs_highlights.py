@@ -171,3 +171,12 @@ def test_week_with_no_highlights_is_not_persisted(tmp_path: Path, api):
     api(FakeApi({}))
     out = hl.scrape_season(2025, root=tmp_path, schedule=df, now_ms=NOW)
     assert out["lists_empty"] == 1 and not hl.list_path(2025, "REG", 1, tmp_path).exists()
+
+
+def test_highlights_from_games_that_never_finished_are_not_fetched(tmp_path: Path, api):
+    # game 2 was suspended (phase never FINAL) but still has a listed highlight
+    df = _sched(_game(1, 1, NOW - 30 * DAY, FINAL), _game(2, 1, NOW - 30 * DAY, {"phase": None}))
+    fake = api(FakeApi({("REG", 1): [_item(1, 10), _item(2, 182)]}, deny={(2, 182)}))
+    out = hl.scrape_season(2025, root=tmp_path, schedule=df, now_ms=NOW)
+    assert out["not_final"] == 1 and out["failed"] == 0 and out["wrote"] == 2
+    assert not any(p.get("gameId") == 2 for path, p in fake.calls if path != "/plays/highlights")

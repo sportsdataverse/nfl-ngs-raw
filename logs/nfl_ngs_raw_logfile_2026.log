@@ -1,18 +1,19 @@
-=== season 2026  2026-10-04 11:45:17Z ===
-ngs_01_schedules_scrape {"season": 2026, "status": "wrote", "games": 321, "elapsed": 1.0281204829807393}
+=== season 2026  2026-10-05 11:45:14Z ===
+ngs_01_schedules_scrape {"season": 2026, "status": "wrote", "games": 321, "elapsed": 0.4367810300318524}
 stage ngs_01_schedules_scrape elapsed=4s
-ngs_02_teams_scrape {"season": 2026, "status": "wrote", "elapsed": 0.7771439279895276}
-stage ngs_02_teams_scrape elapsed=5s
-ngs_03_statboard_scrape {"season": 2026, "status": "ok", "wrote": 32, "skipped": 0, "empty": 0, "absent": 0, "failed": 0, "elapsed": 12.020643564988859}
+ngs_02_teams_scrape {"season": 2026, "status": "wrote", "elapsed": 0.3566600030171685}
+stage ngs_02_teams_scrape elapsed=4s
+ngs_03_statboard_scrape {"season": 2026, "status": "ok", "wrote": 32, "skipped": 0, "empty": 0, "absent": 0, "failed": 0, "elapsed": 11.599429748021066}
 stage ngs_03_statboard_scrape elapsed=15s
-ngs_04_leaders_scrape {"season": 2026, "status": "ok", "wrote": 62, "skipped": 0, "empty": 0, "absent": 0, "failed": 0, "elapsed": 30.110401817015372}
+ngs_04_leaders_scrape {"season": 2026, "status": "ok", "wrote": 62, "skipped": 0, "empty": 0, "absent": 0, "failed": 0, "elapsed": 30.603944450966083}
 stage ngs_04_leaders_scrape elapsed=34s
-ngs_05_gamecenter_scrape {"season": 2026, "status": "ok", "games": 98, "wrote": 0, "skipped": 98, "empty": 0, "absent": 0, "failed": 0, "elapsed": 0.2648070700233802}
-stage ngs_05_gamecenter_scrape elapsed=4s
-  highlights 2026: 250/848 {'weeks': 8, 'lists_wrote': 2, 'lists_skipped': 6, 'lists_empty': 0, 'highlights': 848, 'wrote': 0, 'skipped': 500, 'failed': 0, 'not_final': 0}
-  highlights 2026: 500/848 {'weeks': 8, 'lists_wrote': 2, 'lists_skipped': 6, 'lists_empty': 0, 'highlights': 848, 'wrote': 0, 'skipped': 1000, 'failed': 0, 'not_final': 0}
-  highlights 2026: 750/848 {'weeks': 8, 'lists_wrote': 2, 'lists_skipped': 6, 'lists_empty': 0, 'highlights': 848, 'wrote': 0, 'skipped': 1500, 'failed': 0, 'not_final': 0}
-ngs_06_highlights_scrape {"season": 2026, "status": "ok", "weeks": 8, "lists_wrote": 2, "lists_skipped": 6, "lists_empty": 0, "highlights": 848, "wrote": 0, "skipped": 1696, "failed": 0, "not_final": 0, "elapsed": 11.566790939017665}
-stage ngs_06_highlights_scrape elapsed=15s
+  gamecenter 2026: 100/112 {'wrote': 2, 'skipped': 98, 'empty': 0, 'absent': 0, 'failed': 0}
+ngs_05_gamecenter_scrape {"season": 2026, "status": "ok", "games": 112, "wrote": 14, "skipped": 98, "empty": 0, "absent": 0, "failed": 0, "elapsed": 6.5138972899876535}
+stage ngs_05_gamecenter_scrape elapsed=10s
+  highlights 2026: 250/992 {'weeks': 8, 'lists_wrote': 2, 'lists_skipped': 6, 'lists_empty': 0, 'highlights': 992, 'wrote': 0, 'skipped': 500, 'failed': 0, 'not_final': 0}
+  highlights 2026: 500/992 {'weeks': 8, 'lists_wrote': 2, 'lists_skipped': 6, 'lists_empty': 0, 'highlights': 992, 'wrote': 0, 'skipped': 1000, 'failed': 0, 'not_final': 0}
+  highlights 2026: 750/992 {'weeks': 8, 'lists_wrote': 2, 'lists_skipped': 6, 'lists_empty': 0, 'highlights': 992, 'wrote': 0, 'skipped': 1500, 'failed': 0, 'not_final': 0}
+ngs_06_highlights_scrape {"season": 2026, "status": "ok", "weeks": 8, "lists_wrote": 2, "lists_skipped": 6, "lists_empty": 0, "highlights": 992, "wrote": 288, "skipped": 1696, "failed": 0, "not_final": 0, "elapsed": 182.4043700559996}
+stage ngs_06_highlights_scrape elapsed=186s
 season 2026 EXIT=0
 pushed: NGS Raw Update (Start: 2026 End: 2026) (attempt 1)

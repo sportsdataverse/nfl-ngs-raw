@@ -1,20 +1,28 @@
-=== season 2026  2026-10-11 11:45:13Z ===
-ngs_01_schedules_scrape {"season": 2026, "status": "wrote", "games": 321, "elapsed": 0.8711489280103706}
-stage ngs_01_schedules_scrape elapsed=4s
-ngs_02_teams_scrape {"season": 2026, "status": "wrote", "elapsed": 0.35867650699219666}
-stage ngs_02_teams_scrape elapsed=3s
-ngs_03_statboard_scrape {"season": 2026, "status": "ok", "wrote": 35, "skipped": 0, "empty": 0, "absent": 0, "failed": 0, "elapsed": 12.729613561998121}
-stage ngs_03_statboard_scrape elapsed=16s
-ngs_04_leaders_scrape {"season": 2026, "status": "ok", "wrote": 69, "skipped": 0, "empty": 0, "absent": 0, "failed": 0, "elapsed": 32.263240478001535}
-stage ngs_04_leaders_scrape elapsed=36s
-  gamecenter 2026: 100/114 {'wrote': 0, 'skipped': 100, 'empty': 0, 'absent': 0, 'failed': 0}
-ngs_05_gamecenter_scrape {"season": 2026, "status": "ok", "games": 114, "wrote": 0, "skipped": 114, "empty": 0, "absent": 0, "failed": 0, "elapsed": 0.2275747169915121}
-stage ngs_05_gamecenter_scrape elapsed=3s
-  highlights 2026: 250/1018 {'weeks': 9, 'lists_wrote': 2, 'lists_skipped': 7, 'lists_empty': 0, 'highlights': 1018, 'wrote': 0, 'skipped': 500, 'failed': 0, 'not_final': 0}
-  highlights 2026: 500/1018 {'weeks': 9, 'lists_wrote': 2, 'lists_skipped': 7, 'lists_empty': 0, 'highlights': 1018, 'wrote': 0, 'skipped': 1000, 'failed': 0, 'not_final': 0}
-  highlights 2026: 750/1018 {'weeks': 9, 'lists_wrote': 2, 'lists_skipped': 7, 'lists_empty': 0, 'highlights': 1018, 'wrote': 0, 'skipped': 1500, 'failed': 0, 'not_final': 0}
-  highlights 2026: 1000/1018 {'weeks': 9, 'lists_wrote': 2, 'lists_skipped': 7, 'lists_empty': 0, 'highlights': 1018, 'wrote': 0, 'skipped': 2000, 'failed': 0, 'not_final': 0}
-ngs_06_highlights_scrape {"season": 2026, "status": "ok", "weeks": 9, "lists_wrote": 2, "lists_skipped": 7, "lists_empty": 0, "highlights": 1018, "wrote": 0, "skipped": 2036, "failed": 0, "not_final": 0, "elapsed": 13.636643631005427}
-stage ngs_06_highlights_scrape elapsed=17s
+=== season 2026  2026-10-12 11:45:13Z ===
+ngs_01_schedules_scrape {"season": 2026, "status": "wrote", "games": 321, "elapsed": 0.5938244319986552}
+stage ngs_01_schedules_scrape elapsed=3s
+ngs_02_teams_scrape {"season": 2026, "status": "wrote", "elapsed": 0.35391165502369404}
+stage ngs_02_teams_scrape elapsed=4s
+ngs_03_statboard_scrape {"season": 2026, "status": "ok", "wrote": 35, "skipped": 0, "empty": 0, "absent": 0, "failed": 0, "elapsed": 12.323494537035003}
+stage ngs_03_statboard_scrape elapsed=15s
+ngs_04_leaders_scrape {"season": 2026, "status": "ok", "wrote": 69, "skipped": 0, "empty": 0, "absent": 0, "failed": 0, "elapsed": 34.18636834999779}
+stage ngs_04_leaders_scrape elapsed=37s
+  gamecenter 2026: 100/127 {'wrote': 0, 'skipped': 100, 'empty': 0, 'absent': 0, 'failed': 0}
+ngs_05_gamecenter_scrape {"season": 2026, "status": "ok", "games": 127, "wrote": 13, "skipped": 114, "empty": 0, "absent": 0, "failed": 0, "elapsed": 5.961363853013609}
+stage ngs_05_gamecenter_scrape elapsed=9s
+  highlights 2026: 250/1149 {'weeks': 9, 'lists_wrote': 2, 'lists_skipped': 7, 'lists_empty': 0, 'highlights': 1149, 'wrote': 0, 'skipped': 500, 'failed': 0, 'not_final': 0}
+  highlights 2026: 500/1149 {'weeks': 9, 'lists_wrote': 2, 'lists_skipped': 7, 'lists_empty': 0, 'highlights': 1149, 'wrote': 0, 'skipped': 1000, 'failed': 0, 'not_final': 0}
+  highlights 2026: 750/1149 {'weeks': 9, 'lists_wrote': 2, 'lists_skipped': 7, 'lists_empty': 0, 'highlights': 1149, 'wrote': 0, 'skipped': 1500, 'failed': 0, 'not_final': 0}
+  highlights 2026: 1000/1149 {'weeks': 9, 'lists_wrote': 2, 'lists_skipped': 7, 'lists_empty': 0, 'highlights': 1149, 'wrote': 0, 'skipped': 2000, 'failed': 0, 'not_final': 0}
+ngs_06_highlights_scrape {"season": 2026, "status": "ok", "weeks": 9, "lists_wrote": 2, "lists_skipped": 7, "lists_empty": 0, "highlights": 1149, "wrote": 262, "skipped": 2036, "failed": 0, "not_final": 0, "elapsed": 167.7023387189838}
+stage ngs_06_highlights_scrape elapsed=171s
 season 2026 EXIT=0
-pushed: NGS Raw Update (Start: 2026 End: 2026) (attempt 1)
+To github.com:sportsdataverse/nfl-ngs-raw.git
+ ! [rejected]          HEAD -> main (non-fast-forward)
+error: failed to push some refs to 'github.com:sportsdataverse/nfl-ngs-raw.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. If you want to integrate the remote changes,
+hint: use 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+push rejected (attempt 1); syncing with origin
+pushed: NGS Raw Update (Start: 2026 End: 2026) (attempt 2)
